@@ -1,6 +1,7 @@
 Package: amanda
 Priority: optional
 Section: devel
+Version: 1.0
 Maintainer: xxx
 Architecture: all
 Depends: libc6 (>=2.1)
