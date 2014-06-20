@@ -2,6 +2,6 @@ Package: amanda
 Priority: optional
 Section: devel
 Maintainer: xxx
-Architecture: All
+Architecture: all
 Depends: libc6 (>=2.1)
 Description: amanda tool for backup 
