@@ -1,0 +1,47 @@
+#!/bin/bash
+#
+# Original wrapper by Paul Bijnens
+#
+# worked by Stefan G. Weichinger
+# to enable gpg-encrypted dumps via aespipe
+# also worked by Matthieu Lochegnies for server-side encryption
+
+prefix="/nokia/apps/easha/amanda"
+exec_prefix="${prefix}"
+sbindir="/nokia/apps/easha/amanda/sbin"
+amlibexecdir="/nokia/apps/easha/amanda/libexec/amanda"
+. "${amlibexecdir}/amanda-sh-lib.sh"
+
+# add sbin and ucb dirs, as well as csw (blastwave)
+PATH="$PATH:/usr/sbin:/sbin:/usr/ucb:/opt/csw/bin"
+export PATH
+
+AMANDA_HOME=~amanda
+AM_AESPIPE=/nokia/apps/easha/amanda/sbin/amaespipe
+AM_PASSPHRASE=$AMANDA_HOME/.am_passphrase
+
+AESPIPE=`which aespipe`
+
+if [ $? -ne 0 ] ; then
+	echo `_ '%s: %s was not found in %s' "$0" "aespipe" "$PATH"` >&2
+        exit 2
+fi
+
+if [ ! -x $AESPIPE ] ; then
+	echo `_ '%s: %s is not executable' "$0" "aespipe"` >&2
+        exit 2
+fi
+
+if [ ! -x $AM_AESPIPE ] ; then
+        echo `_ '%s: %s was not found' "$0" "$AM_AESPIPE"` >&2
+        exit 2
+fi
+if [ ! -x $AM_AESPIPE ] ; then
+        echo `_ '%s: %s is not executable' "$0" "$AM_AESPIPE"` >&2
+        exit 2
+fi
+
+$AM_AESPIPE "$@" 3< $AM_PASSPHRASE
+
+rc=$?
+exit $rc
